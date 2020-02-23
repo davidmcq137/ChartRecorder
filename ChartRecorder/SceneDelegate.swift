@@ -45,8 +45,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             
             cD.xp.append(xx)
-            cD.yp.append(sin(2 * .pi * cD.xp.last! / 100))
-            cD.zp.append(cos(2 * .pi * cD.xp.last! / 100))
+            cD.yp.append( (1 + sin(2 * .pi * cD.xp.last! / 100)) * 5)
+            cD.zp.append(cos(2 * .pi * cD.xp.last! / 100)*40)
             //print("xp,yp", cD.xp.last!, cD.yp.last!)
         }
         

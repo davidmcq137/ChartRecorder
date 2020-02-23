@@ -13,12 +13,32 @@ struct ContentView: View {
     @EnvironmentObject var cD: chartData
     
     var body: some View {
-        chartRecorder(aspect: 3,
-                      XP: cD.xp, YP: cD.yp, ZP: cD.zp,
-                      xrange: 100.0, nlabel: 5,
-                      ymin: -0.2, ymax: 0.2, ylabel: "Pressure (psi): ", yvalue: 5.2, ycolor: Color.blue,
-                      zmin: -1.0, zmax: 1.0, zlabel: "Flow (oz/min): ", zvalue: 38.5, zcolor: Color.orange
-        )
+        VStack{
+            chartRecorder(aspect: 3,
+                          XP: cD.xp, YP: cD.yp, ZP: cD.zp,
+                          xrange: 120.0, nlabel: 6,
+                          ymin: 0, ymax: 10, ylabel: "Pressure (psi): ", yvalue: 5.2, ycolor: Color.blue,
+                          zmin: -40.0, zmax: 40.0, zlabel: "Flow (oz/min): ", zvalue: 38.5, zcolor: Color.orange
+            )
+            Button(action: {
+                //writeValue(data: "(Off)")
+                
+                self.cD.xp = []
+                self.cD.yp = []
+                self.cD.zp = []
+                
+            }){
+                Text("Clear")
+                    .font(.system(size: 25))
+                    .frame(width: 70)
+                    .padding(10)
+                    .background(Color.red)
+                    .cornerRadius(40)
+                    .foregroundColor(Color.primary)
+                    .padding(10)
+                    //.border(Color.yellow)
+            }
+        }
     }
 }
 
@@ -131,7 +151,7 @@ private struct graphRect: Shape {
 private struct graphGrid: Shape {
     func path(in rect: CGRect) -> Path {
         let vgrid = 4
-        let hgrid = 10
+        let hgrid = 12
         var path = Path()
         for i in 1 ... vgrid {
             path.move(to: CGPoint(x: rect.minX, y:rect.minY + CGFloat(i) * rect.height/CGFloat(vgrid)))
