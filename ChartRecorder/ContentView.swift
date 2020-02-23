@@ -56,42 +56,22 @@ struct chartRecorder: View {
                 graphData(XP: XP, YP: YP, xrange: xrange, ymin: ymin, ymax: ymax, linewidth: 2).aspectRatio(aspect, contentMode: .fit).foregroundColor(ycolor).clipped()
                 graphData(XP: XP, YP: ZP, xrange: xrange, ymin: zmin, ymax: zmax, linewidth: 2).aspectRatio(aspect, contentMode: .fit).foregroundColor(zcolor).clipped()
             }
-            graphLabels(xrange: xrange, nlabel: nlabel).frame(height: 15)
+            graphLabels(XP: XP, xrange: xrange, nlabel: nlabel).frame(height: 15)
         }.padding().border(Color.yellow)
     }
 }
 
-struct XontentView: View {
-    
-    @EnvironmentObject var cD: chartData
-    
-    var body: some View {
-        VStack(spacing: 5) {
-            HStack (spacing: 0){
-                Text("Pressure (psi): 5.2").foregroundColor(Color.blue).font(.system(size: 12))                //Text(": 5.").foregroundColor(Color.blue)
-                //Text("20").foregroundColor(Color.blue).underline()
-                Spacer()
-                Text("Flow (oz/min): 38.5").foregroundColor(Color.yellow).font(.system(size: 12))
-            }
-            ZStack {
-                graphRect().aspectRatio(3, contentMode: .fit)
-                graphGrid().aspectRatio(3, contentMode: .fit)
-                graphData(XP: cD.xp, YP: cD.yp, xrange: 100.0, ymin: -0.2, ymax: 0.2, linewidth: 2).aspectRatio(3, contentMode: .fit).foregroundColor(Color.blue).clipped()
-                graphData(XP: cD.xp, YP: cD.zp, xrange: 100.0, ymin: -1.0, ymax: 1.0, linewidth: 2).aspectRatio(3, contentMode: .fit).foregroundColor(Color.yellow).clipped()
-            }
-            graphLabels(xrange: 100.0, nlabel: 5).frame(height: 15)
-        }.padding().border(Color.yellow)
-    }
-}
 
 private struct graphLabels: View {
 
     @EnvironmentObject var cD: chartData
     
+    private let XP: [Double]
     private let xrange: Double
     private let nlabel: Int
     
-    init(xrange: Double, nlabel: Int) {
+    init(XP: [Double], xrange: Double, nlabel: Int) {
+        self.XP = XP
         self.xrange = xrange
         self.nlabel = nlabel
     }
@@ -100,7 +80,7 @@ private struct graphLabels: View {
         HStack {
             GeometryReader { (gR) in
                 ForEach(0 ... self.nlabel+1, id: \.self) { i in
-                    Text(labeltext(range: self.xrange, nlab: self.nlabel, seq: i, XP: self.cD.xp)).position(labelpos(range: self.xrange, nlab: self.nlabel, seq: i, XP: self.cD.xp, wid: gR.size.width )).font(.system(size: 10)).border(Color.red).clipped()
+                    Text(labeltext(range: self.xrange, nlab: self.nlabel, seq: i, XP: self.XP)).position(labelpos(range: self.xrange, nlab: self.nlabel, seq: i, XP: self.XP, wid: gR.size.width )).font(.system(size: 10)).border(Color.red).clipped()
                 }
             }
         }
